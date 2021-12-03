@@ -1,4 +1,7 @@
-## Mailspring-Sync
+## Mailspring-Sync (updated dec 2021 version, reworked to successfully build on Ubuntu/Debian)
+
+Update: no dependencies need to be installed priorly, the build.sh script installs them all .
+
 
 This repository contains the source code for Mailspring's sync engine, a native
 C++11 codebase that targets Mac, Windows, and Linux. It leverages the MailCore2
