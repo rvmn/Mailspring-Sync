@@ -45,7 +45,7 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then
   echo "Building and installing libetpan..."
   cd "$MAILSYNC_DIR/Vendor/libetpan"
   ./autogen.sh --with-openssl=/opt/openssl
-  make >/dev/null
+  make -t >/dev/null
   sudo make install prefix=/usr >/dev/null
 
   # build mailcore2
@@ -54,13 +54,13 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then
   mkdir -p build
   cd build
   cmake ..
-  make
+  make -t
 
   # build mailsync
   echo "Building Mailspring MailSync..."
   cd "$MAILSYNC_DIR"
   cmake .
-  make
+  make -t
 
   # copy build product into the client working directory.
   cp "$MAILSYNC_DIR/mailsync" "$APP_ROOT_DIR/mailsync.bin"
@@ -71,7 +71,7 @@ elif [[ "$OSTYPE" == "linux-gnu" ]]; then
 
   # copy libsasl2's modules into the target directory because they're all shipped separately
   # (We set SASL_PATH below so it finds these.)
-  cp /usr/lib/x86_64-linux-gnu/sasl2/* "$APP_ROOT_DIR"
+  cp /usr/lib/aarch64-linux-gnu/sasl2/* "$APP_ROOT_DIR"
 
   printf "#!/bin/bash\nset -e\nset -o pipefail\nSCRIPTPATH=\"\$( cd \"\$(dirname \"\$0\")\" >/dev/null 2>&1 ; pwd -P )\"\nSASL_PATH=\"\$SCRIPTPATH\" LD_LIBRARY_PATH=\"\$SCRIPTPATH;\$LD_LIBRARY_PATH\" \"\$SCRIPTPATH/mailsync.bin\" \"\$@\"" > "$APP_ROOT_DIR/mailsync"
   chmod +x "$APP_ROOT_DIR/mailsync"
