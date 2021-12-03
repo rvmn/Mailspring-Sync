@@ -23,12 +23,14 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     /usr/include/tidy
     /usr/include/libxml2
     /usr/include/curl
+    /usr/lib/aarch64-linux-gnu
   )
   
-  set(icu_libraries icudata icui18n icuio icule iculx icutest icutu icuuc)
+  set(icu_libraries icudata icui18n icuio iculx icutu icuuc)
   set(linux_libraries ${icu_libraries} pthread uuid xml2)
 
   link_directories(/opt/openssl/lib)
+  link_directories(/usr/lib/aarch64-linux-gnu)
   link_directories(Vendor/mailcore2/build/src)
   include_directories(Vendor/mailcore2/build/src/include)
 
@@ -70,7 +72,7 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   find_library(Z_LIB NAMES libz.a libz)
   target_link_libraries(mailsync ${Z_LIB})
 
-  find_library(TIDY_LIB NAMES libtidy.a libtidy)
+  find_library(TIDY_LIB NAMES libtidy.a libtidy.so PATH /usr/lib/aarch64-linux-gnu)
   target_link_libraries(mailsync ${TIDY_LIB})
 
   find_library(RESOLV_LIB NAMES libresolv.a libresolv)
@@ -99,10 +101,10 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   #find_library(SASL2_LIB NAMES libsasl2.a libsasl2)
   #target_link_libraries(mailsync ${SASL2_LIB})
 
-  find_library(SSL_LIB NAMES libssl.a libssl PATHS /opt/openssl/lib NO_DEFAULT_PATH)
+  find_library(SSL_LIB NAMES libssl.a libssl.so PATHS /usr/lib/aarch64-linux-gnu NO_DEFAULT_PATH)
   target_link_libraries(mailsync ${SSL_LIB})
 
-  find_library(CRYPTO_LIB NAMES libcrypto.a libcrypto PATHS /opt/openssl/lib NO_DEFAULT_PATH)
+  find_library(CRYPTO_LIB NAMES libcrypto.a libcrypto PATHS /usr/lib/aarch64-linux-gnu NO_DEFAULT_PATH)
   target_link_libraries(mailsync ${CRYPTO_LIB})
 
   #find_library(SASLEXTRA_LIB NAMES libgssapi.a libgssapi)
